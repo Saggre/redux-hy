@@ -12,6 +12,15 @@ const getAll = async () => {
 };
 
 /**
+ * Get a single anecdote
+ * @returns {Promise<any>}
+ */
+const getSingle = async (id) => {
+  const response = await axios.get(`${baseUrl}/${id}`);
+  return response.data;
+};
+
+/**
  * Create a new anecdote
  * @param content
  * @returns {Promise<any>}
@@ -24,4 +33,20 @@ const createNew = async (content) => {
   return response.data;
 };
 
-export default { getAll, createNew };
+/**
+ * Add like to an anecdote by id
+ * @param id
+ * @returns {Promise<any>}
+ */
+const addLike = async (id) => {
+  const anecdote = await getSingle(id);
+  const response = await axios.put(`${baseUrl}/${id}`, {
+    content: anecdote.content,
+    votes: anecdote.votes + 1,
+  });
+  return response.data;
+};
+
+export default {
+  getAll, createNew, addLike, getSingle,
+};

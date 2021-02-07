@@ -1,35 +1,21 @@
-export const setMessage = (text, timeout) => ({
-  type: 'SET_MESSAGE',
-  data: {
-    text,
-    timeout,
-  },
-});
-
-export const clearMessage = () => ({
-  type: 'CLEAR_MESSAGE',
-  data: {},
-});
-
-const initialState = { text: '', timeout: null };
-
-const endTimeout = (state) => {
-  if (state.timeout != null) {
-    clearTimeout(state.timeout);
-  }
+export const setMessage = (text, seconds) => async (dispatch) => {
+  dispatch({
+    type: 'SET_MESSAGE',
+    data: text,
+  });
+  await new Promise((a) => setTimeout(a, seconds * 1000));
+  dispatch({
+    type: 'CLEAR_MESSAGE',
+    data: text,
+  });
 };
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = '', action) => {
   switch (action.type) {
     case 'SET_MESSAGE':
-      endTimeout(state);
-      return {
-        text: action.data.text,
-        timeout: action.data.timeout,
-      };
+      return action.data;
     case 'CLEAR_MESSAGE':
-      endTimeout(state);
-      return initialState;
+      return action.data === state ? '' : state;
     default:
       return state;
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { likeAnecdote } from '../reducers/anecdoteReducer';
-import { clearMessage, setMessage } from '../reducers/notificationReducer';
+import { setMessage } from '../reducers/notificationReducer';
 
 const AnecdoteList = () => {
   const filter = useSelector((state) => state.filter.toLowerCase());
@@ -11,12 +11,8 @@ const AnecdoteList = () => {
   const dispatch = useDispatch();
 
   const vote = (anecdote) => {
-    console.log('vote', anecdote.id);
     dispatch(likeAnecdote(anecdote.id));
-    dispatch(setMessage(
-      `you voted ${anecdote.content}`,
-      setTimeout(() => dispatch(clearMessage()), 5000),
-    ));
+    dispatch(setMessage(`you voted ${anecdote.content}`, 5));
   };
 
   return (

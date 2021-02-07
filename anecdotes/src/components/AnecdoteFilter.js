@@ -1,10 +1,8 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { setFilter } from '../reducers/filterReducer';
 
-const AnecdoteFilter = () => {
-  const dispatch = useDispatch();
-
+const AnecdoteFilter = (props) => {
   const style = {
     marginBottom: 10,
   };
@@ -12,9 +10,13 @@ const AnecdoteFilter = () => {
   return (
     <div style={style}>
       filter
-      <input type="text" onChange={(event) => dispatch(setFilter(event.target.value))} />
+      <input type="text" onChange={(event) => props.setFilter(event.target.value)} />
     </div>
   );
 };
 
-export default AnecdoteFilter;
+const mapDispatchToProps = {
+  setFilter,
+};
+
+export default connect(null, mapDispatchToProps)(AnecdoteFilter);
